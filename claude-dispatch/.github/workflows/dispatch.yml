@@ -1,0 +1,25 @@
+name: Forward dispatch
+on:
+  repository_dispatch:
+    types: [forward]
+
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Forward to webhook
+        env:
+          PAYLOAD: ${{ toJson(github.event.client_payload.body) }}
+          URL: ${{ github.event.client_payload.url }}
+        run: |
+          echo "Forwarding to: $URL"
+          STATUS=$(curl -s -o /tmp/response.txt -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD" \
+            "$URL")
+          echo "---STATUS: $STATUS"
+          cat /tmp/response.txt
+          if [ "$STATUS" -ge 400 ]; then
+            exit 1
+          fi

@@ -1,0 +1,58 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e93e9168-c52b-4d53-98fa-79789bfae5aa",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -432,
+        16
+      ],
+      "id": "c9a0a112-9c9d-48e2-980d-db8c165ada78",
+      "name": "Webhook",
+      "webhookId": "e93e9168-c52b-4d53-98fa-79789bfae5aa"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.to }}",
+        "subject": "={{ $json.body.subject }}",
+        "message": "={{ $json.body.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        16
+      ],
+      "id": "9468b63b-8e9d-4866-a01b-20fe65774b6a",
+      "name": "Send a message",
+      "webhookId": "6b4efcdf-0b5c-437c-8101-35429da0eef3",
+      "credentials": {
+        "gmailOAuth2": {
+          "name": "<a remplir apres import: bind ton credential Gmail OAuth2>"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
